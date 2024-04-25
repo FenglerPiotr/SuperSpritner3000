@@ -1,0 +1,43 @@
+version: '3.8'
+
+services:
+  ss3000-app:
+    build:
+      context: ./
+      dockerfile: docker/Dockerfile
+    container_name: ss3000
+    depends_on:
+      ss3000-postgres:
+        condition: service_healthy
+    ports:
+      - '8080:8080'
+      - '5005:5005'
+    networks:
+      - ss3000net
+    command: ["java", "-Xdebug", "-Xrunjdwp:transport=dt_socket,server=y,suspend=n,address=*:5005", "-jar", "./ss3000.jar"]
+
+  ss3000-postgres:
+    image: postgres:15.2
+    container_name: ss3000db
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -U postgres" ]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=root
+      - POSTGRES_DB=supersprinter3000
+    ports:
+      - '5432:5432'
+    volumes:
+      - ss3000dbvol:/var/lib/postgresql/data
+    networks:
+        - ss3000net
+
+networks:
+  ss3000net:
+
+volumes:
+  ss3000dbvol:
+

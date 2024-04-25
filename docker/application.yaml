@@ -1,0 +1,5 @@
+spring:
+  datasource:
+    url: jdbc:postgresql://ss3000db:5432/supersprinter3000
+  jpa:
+    show-sql: false

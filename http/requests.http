@@ -1,0 +1,147 @@
+### USER STORIES
+
+POST localhost:8080/api/v1/user-stories
+Content-Type: application/json
+Authorization: Bearer {{auth-token}}
+
+{
+  "title": "user story 1",
+  "description": "very important task",
+  "acceptanceCriteria": "all endpoints must be secured",
+  "businessValue": 200,
+  "estimation": 10.5,
+  "status": "TODO"
+}
+
+> {%
+    client.global.set("us-uuid", response.body.id);
+%}
+
+###
+
+GET localhost:8080/api/v1/user-stories
+Authorization: Bearer {{auth-token}}
+
+###
+
+GET localhost:8080/api/v1/user-stories?unassignedOnly=true
+Authorization: Bearer {{auth-token}}
+
+###
+
+GET localhost:8080/api/v1/user-stories/{{us-uuid}}
+Authorization: Bearer {{auth-token}}
+
+###
+
+PUT localhost:8080/api/v1/user-stories/{{us-uuid}}
+Content-Type: application/json
+Authorization: Bearer {{auth-token}}
+
+{
+  "title": "user story 2",
+  "description": "very important task",
+  "acceptanceCriteria": "all endpoints must be secured",
+  "businessValue": 200,
+  "estimation": 10.5,
+  "status": "TODO"
+}
+
+### DEVELOPERS
+
+POST localhost:8080/api/v1/developers
+Content-Type: application/json
+Authorization: Bearer {{auth-token}}
+
+{
+  "firstName": "Adam",
+  "lastName": "Arczyński",
+  "email": "adam.arczynski@codecool.com"
+}
+
+> {%
+    client.global.set("dev-uuid", response.body.id);
+%}
+
+###
+
+GET localhost:8080/api/v1/developers/{{dev-uuid}}
+Authorization: Bearer {{auth-token}}
+
+###
+
+GET localhost:8080/api/v1/developers
+Authorization: Bearer {{auth-token}}
+
+###
+
+GET localhost:8080/api/v1/developers?page=0&size=2&sort=lastName,desc
+Authorization: Bearer {{auth-token}}
+
+###
+
+GET localhost:8080/api/v1/developers?busiestDev=2
+Authorization: Bearer {{auth-token}}
+
+###
+
+GET localhost:8080/api/v1/developers?stats=businessValue
+Authorization: Bearer {{auth-token}}
+
+###
+
+DELETE localhost:8080/api/v1/developers/{{dev-uuid}}
+Authorization: Bearer {{auth-token}}
+
+### ASSIGN TASK TO DEV
+
+PUT localhost:8080/api/v1/user-stories/{{us-uuid}}/developers/{{dev-uuid}}
+Authorization: Bearer {{auth-token}}
+
+### Authrozation
+
+### Login as user
+
+POST localhost:8080/api/v1/auth/login
+Content-Type: application/json
+
+{
+  "username": "user@mail.com",
+  "password": "usersecret"
+}
+
+> {% client.global.set("auth-token", response.body.token); %}
+
+### Login as admin
+
+POST localhost:8080/api/v1/auth/login
+Content-Type: application/json
+
+{
+  "username": "admin@mail.com",
+  "password": "adminsecret"
+}
+
+> {% client.global.set("auth-token", response.body.token); %}
+
+### Register a new user
+
+POST localhost:8080/api/v1/auth/register
+Content-Type: application/json
+
+{
+  "username": "adamadam@gmail.com",
+  "password": "012345678912"
+}
+
+### Log in with new user
+
+POST localhost:8080/api/v1/auth/login
+Content-Type: application/json
+
+{
+  "username": "adamadam@gmail.com",
+  "password": "012345678912"
+}
+
+> {% client.global.set("auth-token", response.body.token); %}

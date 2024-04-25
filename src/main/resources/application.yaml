@@ -1,0 +1,19 @@
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5432/supersprinter3000
+    username: postgres
+    password: root
+    driver-class-name: org.postgresql.Driver
+  jpa:
+    open-in-view: false
+    hibernate:
+      ddl-auto: validate
+    show-sql: true
+  flyway:
+    locations: db/migration/postgres
+app:
+  security:
+    jwt:
+      token:
+        secret: 8a3b31f9e8fe9e51e26d2f79a9f19dd9fabf109fdce2fd7b01c5a814128815bd744ef2901ffe16888af912f16d13f410c93ea1cc4853e536bfb55972e07e2e2f
+        validity: 60m
